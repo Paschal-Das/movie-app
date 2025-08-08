@@ -59,12 +59,13 @@ def get_movies():
     except Exception as e:
         return f'Error in getting movie {e}'
     
-@app.route('/get-movies', methods=['get'])
-def get_movies():
+@app.route('/get-movie', methods=['get'])
+def get_movie():
     try:
         cur = mysql.connection.cursor()
-        sql = 'select * from moviedata'
-        cur.execute(sql)
+        id=request.args.get('id')
+        sql = 'select * from moviedata where id=%s'
+        cur.execute(sql,(id,))
         res = cur.fetchall()
         cur.close()
 
@@ -78,7 +79,7 @@ def get_movies():
                 'rating': row[4],
                 'image': row[5]
             })
-        return jsonify(movie_list)
+        return jsonify(movie_list[0])
     except Exception as e:
         return f'Error in getting movie {e}'
 

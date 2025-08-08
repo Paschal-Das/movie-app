@@ -59,9 +59,9 @@ const HomePage = () => {
     </span>
   </div>
 
-  <button className="w-full mt-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200">
+  <link className="w-full mt-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200">
     Learn More
-  </button>
+  </link>
 </div>
 
             ))}
