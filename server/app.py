@@ -22,12 +22,12 @@ def add_movie():
         json = request.get_json()
         title = json.get('title')
         description = json.get('description')
-        release_date = json.get('release_date')
+        release_year = json.get('release_date')
         rating = json.get('rating')
         image = json.get('image')
         cur = mysql.connection.cursor()
-        sql = 'INSERT INTO moviedata (title, description, release_date, rating, image) VALUES (%s,%s,%s,%s,%s)'
-        val = (title, description, release_date, rating, image)
+        sql = 'INSERT INTO moviedata (title, description, release_year, rating, image) VALUES (%s,%s,%s,%s,%s)'
+        val = (title, description, release_year, rating, image)
         cur.execute(sql, val)
         mysql.connection.commit()
         cur.close()
@@ -59,6 +59,28 @@ def get_movies():
     except Exception as e:
         return f'Error in getting movie {e}'
     
+@app.route('/get-movies', methods=['get'])
+def get_movies():
+    try:
+        cur = mysql.connection.cursor()
+        sql = 'select * from moviedata'
+        cur.execute(sql)
+        res = cur.fetchall()
+        cur.close()
+
+        movie_list = []
+        for row in res:
+            movie_list.append({
+                'id': row[0],
+                'title': row[1],
+                'description': row[2],
+                'release_date': row[3],
+                'rating': row[4],
+                'image': row[5]
+            })
+        return jsonify(movie_list)
+    except Exception as e:
+        return f'Error in getting movie {e}'
 
 
 if __name__ == '__main__':

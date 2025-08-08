@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import axios from 'axios'
+//
 
 const HomePage = () => {
     const [data, setData] = useState([])
+    const [query, setQuery] =useState('')
+
     useEffect(() => {
         const getMovies = async () => {
             try {
@@ -17,13 +20,17 @@ const HomePage = () => {
         getMovies()
     }, [])
 
+    const filteredMovies=data.filter(movie => (
+      movie.title.toLowerCase().includes(query.toLowerCase())
+    ))
   return (
     <div >
       {/* Title */}
       <div className="flex justify-between mt-5 items-center mx-10">
-        <h1 className='text-blue-700 text-4xl m-4 font-mono'>MovieBlue</h1>
-        <input type="text" placeholder='Search movies here'
+        <h1 className='text-blue-700 text-4xl m-4 font-mono'>MDb</h1>
+        <input type="text" placeholder='Search movies here' value={query}
             className='bg-gray-200 p-2 w-1/4 h-14 px-10 rounded-4xl mr-20'
+            onChange={(e) => setQuery(e.target.value)}
         />
         <i className='fa fa-search absolute left-300 top-12' style={{fontSize: 20}}></i>
         <Link to='/'><i className='fa fa-heart text-red-400' style={{fontSize: 30}}></i></Link>
@@ -32,7 +39,7 @@ const HomePage = () => {
 
 
         <div className="grid grid-cols-3 gap-6 p-6">
-            {data.map(item => (
+            {filteredMovies.map(item => (
                 <div
   key={item.id}
   className="group relative border rounded-xl shadow-md p-4 bg-white hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer transform hover:-translate-y-1"
